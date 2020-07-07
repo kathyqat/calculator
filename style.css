@@ -1,6 +1,10 @@
 :root{
     font-family: arial, sans-serif;
 }
+
+:disabled{
+    color: black;
+}
   
 body{
     width: 500px;

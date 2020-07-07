@@ -20,6 +20,7 @@ function operate (operator, x, y){
 
 const display = document.querySelector('#display');
 const clearButton = document.querySelector('#AC');
+const decimal = document.querySelector('[data-info="decimal"]');
 let displayValue = '';
 let operation = '';
 let mathArray = [];
@@ -33,9 +34,30 @@ function inputNumbers(){
             
             if (displayValue.length < 34){
                 displayValue += number;
+                if (button == decimal){
+                    decimal.disabled = true;
+                };
             };
             display.textContent = displayValue;
             display.style.borderColor = '#4285f4';
+        });
+    });
+}
+
+function inputAction(){
+    const actionButtons = document.querySelectorAll('.action');
+    
+    actionButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            operation = button.getAttribute('id');
+            
+            if (operation != "AC"){
+                let num = Number(displayValue);
+                displayValue = '';
+                mathArray.push(num);
+                mathArray.push(operation);
+                decimal.disabled = false;
+            };
         });
     });
 }
@@ -58,25 +80,8 @@ function determineOperator(action){
     };
 }
 
-function inputAction(){
-    const actionButtons = document.querySelectorAll('.action');
-
-    actionButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            operation = button.getAttribute('id');
-            
-            if (operation != "AC"){
-                let num = Number(displayValue);
-                displayValue = '';
-                mathArray.push(num);
-                mathArray.push(operation);
-            };
-        });
-    });
-}
-
 function reduceArray(index){
-    determineOperator(mathArray[index]);
+    determineOperator(mathArray[index]);  
     let result = operate(operation, mathArray[index-1], mathArray[index+1]);
     mathArray.splice(index-1, 3, result);
 }
@@ -85,7 +90,7 @@ function evaluateEquals(){
     const equalsButton = document.querySelector('.equals');
     
     equalsButton.addEventListener('click', () => {
-        if ((operation == '') || ((operation) && (displayValue == ''))){
+        if ((operation === '') || ((operation) && (displayValue == ''))){
             return;
         } else {
             let num = Number(displayValue);
@@ -94,13 +99,14 @@ function evaluateEquals(){
             
             for (let i=0; i<mathArray.length; i++){
                 if ((mathArray[i] == "/") && (mathArray[i+1] ==  0)) {
-                    display.textContent = 'ILLEGAL MOVE';
-                    operation = '';  
-                    mathArray = [];
-                    return;
+                display.textContent = 'ILLEGAL MOVE';
+                operation = '';  
+                mathArray = [];
+                decimal.disabled = false;
+                return;
                 } else if ((mathArray[i] == "/") || (mathArray[i] == "*")){
-                    reduceArray(i);
-                    i = --i;
+                reduceArray(i);
+                i = --i;
                 };    
             };
             
@@ -122,6 +128,7 @@ function evaluateEquals(){
             display.textContent = result;
             operation = '';  
             mathArray = [];
+            decimal.disabled = false;
         };
     });
 }
@@ -132,6 +139,7 @@ clearButton.addEventListener('click', () => {
     mathArray = [];
     display.textContent = '';
     display.style.borderColor = 'lightgrey';
+    decimal.disabled = false;
 });
 
 function calculate(){
