@@ -25,6 +25,16 @@ let displayValue = '';
 let operation = '';
 let mathArray = [];
 
+function undoNumber(){
+    const backspace = document.querySelector('#backspace');
+    
+    backspace.addEventListener('click', () => {
+        let lastNum = displayValue.length - 1;  
+        displayValue = displayValue.slice(0, lastNum);
+        display.textContent = displayValue;
+    });
+  }
+
 function inputNumbers(){
     const numberButtons = document.querySelectorAll('.number');
     
@@ -51,7 +61,7 @@ function inputAction(){
         button.addEventListener('click', () => {
             operation = button.getAttribute('id');
             
-            if (operation != "AC"){
+            if ((operation != "AC") && (operation != "backspace")){
                 let num = Number(displayValue);
                 displayValue = '';
                 mathArray.push(num);
@@ -144,6 +154,7 @@ clearButton.addEventListener('click', () => {
 
 function calculate(){
     inputNumbers();
+    undoNumber();
     inputAction();
     evaluateEquals();
 }
