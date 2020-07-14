@@ -36,6 +36,10 @@ function pressButtons(){
             let button = document.querySelector(`[id="${idValue}"]`);
             if (e.keyCode == 110){
                 button = decimal;
+                let decimalSearch = displayValue.search(/[.]/g);
+                if (decimalSearch != -1){
+                    return;
+                };
             };
             inputNumbers(button);
         } else if (e.keyCode >= 106 && e.keyCode != 110){
@@ -83,6 +87,11 @@ function undoNumber(){
     let lastNum = displayValue.length - 1;  
     displayValue = displayValue.slice(0, lastNum);
     display.textContent = displayValue;
+    
+    let decimalSearch = displayValue.search(/[.]/g);
+    if (decimalSearch == -1){
+        decimal.disabled = false;
+    };
 }
   
 function inputNumbers(input){
@@ -90,7 +99,6 @@ function inputNumbers(input){
 
     if (displayValue.length < 34){
         displayValue += number;
-        console.log(input == decimal);
         if (input == decimal){
             decimal.disabled = true;
         };
