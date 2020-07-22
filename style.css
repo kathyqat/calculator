@@ -45,7 +45,7 @@ button{
     grid-area: 1/3/2/5;
 }
 
-.action{
+.clear, .action{
     background-color: #dfe1e5;
     font-weight: bold;
 }

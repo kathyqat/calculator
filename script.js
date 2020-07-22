@@ -86,8 +86,9 @@ function clickButtons(){
 function undoNumber(){
     let lastNum = displayValue.length - 1;  
     displayValue = displayValue.slice(0, lastNum);
-    display.textContent = displayValue;
-    
+    let mathString = mathArray.join(' ');
+    display.textContent = mathString + ' ' + displayValue;
+
     let decimalSearch = displayValue.search(/[.]/g);
     if (decimalSearch == -1){
         decimal.disabled = false;
@@ -103,20 +104,20 @@ function inputNumbers(input){
             decimal.disabled = true;
         };
     };
-    display.textContent = displayValue;
+    let mathString = mathArray.join(' ');
+    display.textContent = mathString + ' ' + displayValue;
     display.style.borderColor = '#4285f4';      
 }
 
 function inputAction(input){
     operation = input.getAttribute('id');
-
-    if ((operation != "AC") && (operation != "backspace")){
-        let num = Number(displayValue);
-        displayValue = '';
-        mathArray.push(num);
-        mathArray.push(operation);
-        decimal.disabled = false;
-    };
+    let num = Number(displayValue);
+    displayValue = '';
+    mathArray.push(num);
+    mathArray.push(operation);
+    decimal.disabled = false;
+    let mathString = mathArray.join(' ');
+    display.textContent = mathString;
 }
   
 function determineOperator(action){
